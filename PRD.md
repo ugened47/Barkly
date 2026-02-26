@@ -62,3 +62,21 @@ Follow standard Expo Router conventions:
   /Colors.ts             # Theme colors
   /TricksData.ts         # Mocked JSON data for tricks
 ```
+
+### 4.3. Design & UX Guidelines
+- **UI Paradigm:** Clean, playful, highly legible. Large touch targets (crucial when holding a dog and a phone).
+- **Colors:** Playful palette (primary action color like Cyan/Blue, soft backgrounds).
+- **Navigation:** Bottom Tab Bar for core sections, Stack navigation for drilling into trick details.
+
+## 5. Out of Scope for MVP
+- Backend database (everything is stored locally via AsyncStorage).
+- User authentication/login.
+- Video submission to real trainers.
+- Paid premium subscriptions.
+
+## 6. AI Agent Instructions
+When writing code for this project:
+1. Ensure all imports match the specified tech stack.
+2. Build iteratively. Do not try to implement the entire PRD in one commit.
+3. Prioritize functional, unstyled structure first, then apply StyleSheet styling.
+4. Always handle basic error states (e.g., if the audio file fails to load in expo-av).
