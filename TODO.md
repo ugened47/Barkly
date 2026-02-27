@@ -4,8 +4,8 @@ Tracks MVP feature status per the PRD.
 
 ## Clicker (PRD §3.1)
 - [x] Animated clicker button with spring scale effect (react-native-reanimated)
-- [ ] Click sound playback via expo-av
-- [ ] Visual pulse/flash animation on click (for deaf dogs)
+- [x] Click sound playback via expo-av
+- [x] Visual pulse/flash animation on click (for deaf dogs)
 - [x] Wire ClickerButton into clicker.tsx screen
 
 ## Training Library (PRD §3.2)

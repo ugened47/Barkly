@@ -1,14 +1,35 @@
+import { useEffect, useRef } from 'react';
 import { Pressable, Text } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import { Audio } from 'expo-av';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export function ClickerButton({ onPress }: { onPress?: () => void }) {
   const scale = useSharedValue(1);
+  const soundRef = useRef<Audio.Sound | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    Audio.Sound.createAsync(require('@/assets/sounds/click.mp3'))
+      .then(({ sound }) => {
+        if (mounted) {
+          soundRef.current = sound;
+        } else {
+          sound.unloadAsync();
+        }
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+      soundRef.current?.unloadAsync();
+      soundRef.current = null;
+    };
+  }, []);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -18,6 +39,7 @@ export function ClickerButton({ onPress }: { onPress?: () => void }) {
     scale.value = withSpring(0.88, { damping: 6, stiffness: 300 }, () => {
       scale.value = withSpring(1, { damping: 8, stiffness: 250 });
     });
+    soundRef.current?.replayAsync().catch(() => {});
     onPress?.();
   };
 
