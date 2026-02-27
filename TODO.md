@@ -16,13 +16,13 @@ Tracks MVP feature status per the PRD.
 - [x] "Mark as Mastered" toggle button on trick detail
 
 ## Daily Goals & Home Screen (PRD §3.3)
-- [ ] Streak counter display (consecutive training days)
-- [ ] Recommended unmastered tricks to practice today
-- [ ] Home screen dashboard layout
+- [x] Streak counter display (consecutive training days)
+- [x] Recommended unmastered tricks to practice today
+- [x] Home screen dashboard layout
 
 ## Progress Tracking / Profile (PRD §3.4)
-- [ ] Dog profile form (name, breed) with persistence
-- [ ] Mastered tricks list on profile screen
+- [x] Dog profile form (name, breed) with persistence
+- [x] Mastered tricks list on profile screen
 
 ## State & Persistence
 - [x] Zustand store with streak, masteredTricks, dogProfile
