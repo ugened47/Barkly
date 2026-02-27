@@ -3,10 +3,10 @@
 Tracks MVP feature status per the PRD.
 
 ## Clicker (PRD §3.1)
-- [ ] Animated clicker button with spring scale effect (react-native-reanimated)
+- [x] Animated clicker button with spring scale effect (react-native-reanimated)
 - [ ] Click sound playback via expo-av
 - [ ] Visual pulse/flash animation on click (for deaf dogs)
-- [ ] Wire ClickerButton into clicker.tsx screen
+- [x] Wire ClickerButton into clicker.tsx screen
 
 ## Training Library (PRD §3.2)
 - [x] Define Trick type and populate TricksData.ts (12 tricks, 3 categories)
