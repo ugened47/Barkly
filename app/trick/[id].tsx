@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from '@/components/tw';
 import { useLocalSearchParams } from 'expo-router';
 import { TRICKS_DATA } from '@/constants/TricksData';
 import { useAppStore } from '@/store/useAppStore';
@@ -38,7 +38,6 @@ export default function TrickDetailScreen() {
             </Text>
             <View
               className={`rounded-full px-3 py-1 ${difficultyColor[trick.difficulty]}`}
-              borderCurve="continuous"
             >
               <Text
                 className={`text-xs font-medium ${difficultyColor[trick.difficulty]}`}
@@ -56,12 +55,8 @@ export default function TrickDetailScreen() {
             <View
               key={index}
               className="flex-row gap-3 bg-white rounded-xl p-4"
-              borderCurve="continuous"
             >
-              <View
-                className="h-7 w-7 items-center justify-center rounded-full bg-cyan-100"
-                borderCurve="continuous"
-              >
+              <View className="h-7 w-7 items-center justify-center rounded-full bg-cyan-100">
                 <Text className="text-sm font-semibold text-cyan-700">
                   {index + 1}
                 </Text>
@@ -76,7 +71,6 @@ export default function TrickDetailScreen() {
         <Pressable
           onPress={() => toggleMastered(trick.id)}
           className={`rounded-2xl py-4 items-center ${isMastered ? 'bg-slate-200' : 'bg-cyan-500'}`}
-          borderCurve="continuous"
         >
           <Text
             className={`text-base font-semibold ${isMastered ? 'text-slate-600' : 'text-white'}`}

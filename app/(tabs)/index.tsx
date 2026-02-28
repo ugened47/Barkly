@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from '@/components/tw';
 import { router } from 'expo-router';
 
 import { TrickCard } from '@/components/TrickCard';
@@ -24,10 +24,7 @@ export default function HomeScreen() {
         <Text className="text-3xl font-bold text-slate-900">Good morning!</Text>
 
         {/* Streak Counter */}
-        <View
-          className="bg-white rounded-2xl p-5 gap-2"
-          borderCurve="continuous"
-        >
+        <View className="bg-white rounded-2xl p-5 gap-2">
           <Text className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
             Training Streak
           </Text>
@@ -58,15 +55,12 @@ export default function HomeScreen() {
               ))}
             </View>
           ) : (
-            <View
-              className="bg-white rounded-2xl p-6 items-center gap-2"
-              borderCurve="continuous"
-            >
+            <View className="bg-white rounded-2xl p-6 items-center gap-2">
               <Text className="text-lg font-semibold text-slate-900">
                 All tricks mastered!
               </Text>
               <Text className="text-sm text-slate-500 text-center">
-                You've mastered every trick in the library. Keep it up!
+                You&apos;ve mastered every trick in the library. Keep it up!
               </Text>
             </View>
           )}

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ScrollView, Text, TextInput, View } from 'react-native';
+import { ScrollView, Text, TextInput, View } from '@/components/tw';
 
 import { TRICKS_DATA } from '@/constants/TricksData';
 import { useAppStore } from '@/store/useAppStore';
@@ -23,7 +23,7 @@ export default function ProfileScreen() {
         <Text className="text-3xl font-bold text-slate-900">Profile</Text>
 
         {/* Dog Profile Form */}
-        <View className="bg-white rounded-2xl p-5 gap-4" borderCurve="continuous">
+        <View className="bg-white rounded-2xl p-5 gap-4">
           <Text className="text-lg font-semibold text-slate-900">Your Dog</Text>
 
           <View className="gap-1">
@@ -61,10 +61,7 @@ export default function ProfileScreen() {
           </View>
 
           {masteredTrickObjects.length > 0 ? (
-            <View
-              className="bg-white rounded-2xl overflow-hidden"
-              borderCurve="continuous"
-            >
+            <View className="bg-white rounded-2xl overflow-hidden">
               {masteredTrickObjects.map((trick, index) => (
                 <View
                   key={trick.id}
@@ -78,10 +75,7 @@ export default function ProfileScreen() {
               ))}
             </View>
           ) : (
-            <View
-              className="bg-white rounded-2xl p-6 items-center gap-2"
-              borderCurve="continuous"
-            >
+            <View className="bg-white rounded-2xl p-6 items-center gap-2">
               <Text className="text-base font-semibold text-slate-900">
                 No tricks mastered yet
               </Text>
