@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from '@/components/tw';
 import type { Trick } from '@/constants/TricksData';
 
 type Props = {
@@ -23,7 +23,6 @@ export const TrickCard = React.memo(function TrickCard({
     <Pressable
       onPress={onPress}
       className="bg-white rounded-2xl p-4 active:opacity-70"
-      borderCurve="continuous"
     >
       <View className="flex-row items-center justify-between">
         <View className="flex-1 gap-1">
@@ -41,7 +40,6 @@ export const TrickCard = React.memo(function TrickCard({
         </View>
         <View
           className={`rounded-full px-3 py-1 ${difficultyColor[trick.difficulty]}`}
-          borderCurve="continuous"
         >
           <Text
             className={`text-xs font-medium ${difficultyColor[trick.difficulty]}`}

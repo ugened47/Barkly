@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from '@/components/tw';
 import { router } from 'expo-router';
 import { TRICKS_DATA, type Trick } from '@/constants/TricksData';
 import { TrickCard } from '@/components/TrickCard';

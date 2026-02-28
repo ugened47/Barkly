@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { Pressable, Text } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
 import { Audio } from 'expo-av';
+import { Pressable, Text } from '@/components/tw';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 

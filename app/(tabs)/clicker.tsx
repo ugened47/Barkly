@@ -1,10 +1,10 @@
-import { Text, View } from 'react-native';
-import Animated, {
+import {
   useSharedValue,
   useAnimatedStyle,
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
+import { Text, View, AnimatedView } from '@/components/tw';
 import { ClickerButton } from '@/components/ClickerButton';
 
 export default function ClickerScreen() {
@@ -23,7 +23,7 @@ export default function ClickerScreen() {
 
   return (
     <View className="flex-1 items-center justify-center gap-8 bg-slate-50">
-      <Animated.View
+      <AnimatedView
         pointerEvents="none"
         className="absolute inset-0 bg-cyan-300"
         style={flashStyle}
