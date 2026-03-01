@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
-import { ScrollView, Text, TextInput, View } from '@/components/tw';
+import { Pressable, ScrollView, Text, TextInput, View } from '@/components/tw';
 
+import { ProgressBar } from '@/components/ProgressBar';
 import { TRICKS_DATA } from '@/constants/TricksData';
 import { useAppStore } from '@/store/useAppStore';
 
@@ -8,11 +9,15 @@ export default function ProfileScreen() {
   const dogProfile = useAppStore((s) => s.dogProfile);
   const setDogProfile = useAppStore((s) => s.setDogProfile);
   const masteredTricks = useAppStore((s) => s.masteredTricks);
+  const soundEnabled = useAppStore((s) => s.soundEnabled);
+  const toggleSound = useAppStore((s) => s.toggleSound);
 
   const masteredTrickObjects = useMemo(
     () => TRICKS_DATA.filter((t) => masteredTricks.includes(t.id)),
     [masteredTricks],
   );
+
+  const progress = TRICKS_DATA.length > 0 ? masteredTricks.length / TRICKS_DATA.length : 0;
 
   return (
     <ScrollView
@@ -51,6 +56,25 @@ export default function ProfileScreen() {
           </View>
         </View>
 
+        {/* Settings */}
+        <View className="bg-white rounded-2xl p-5 gap-4">
+          <Text className="text-lg font-semibold text-slate-900">Settings</Text>
+          <View className="flex-row items-center justify-between">
+            <Text className="text-base text-slate-700">Click Sound</Text>
+            <Pressable
+              testID="sound-toggle"
+              onPress={toggleSound}
+              className={`rounded-full px-4 py-2 ${soundEnabled ? 'bg-cyan-500' : 'bg-slate-200'}`}
+            >
+              <Text
+                className={`text-sm font-semibold ${soundEnabled ? 'text-white' : 'text-slate-500'}`}
+              >
+                {soundEnabled ? 'On' : 'Off'}
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+
         {/* Mastered Tricks */}
         <View className="gap-3">
           <View className="flex-row items-center justify-between">
@@ -59,6 +83,9 @@ export default function ProfileScreen() {
               {masteredTrickObjects.length} / {TRICKS_DATA.length}
             </Text>
           </View>
+
+          {/* Progress bar */}
+          <ProgressBar value={progress} />
 
           {masteredTrickObjects.length > 0 ? (
             <View className="bg-white rounded-2xl overflow-hidden">

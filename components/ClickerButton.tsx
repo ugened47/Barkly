@@ -5,11 +5,18 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { Audio } from 'expo-av';
+import * as Haptics from 'expo-haptics';
 import { Pressable, Text } from '@/components/tw';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export function ClickerButton({ onPress }: { onPress?: () => void }) {
+type Props = {
+  onPress?: () => void;
+  /** Whether the click sound plays on each tap. Defaults to true. */
+  soundEnabled?: boolean;
+};
+
+export function ClickerButton({ onPress, soundEnabled = true }: Props) {
   const scale = useSharedValue(1);
   const soundRef = useRef<Audio.Sound | null>(null);
 
@@ -39,7 +46,10 @@ export function ClickerButton({ onPress }: { onPress?: () => void }) {
     scale.value = withSpring(0.88, { damping: 6, stiffness: 300 }, () => {
       scale.value = withSpring(1, { damping: 8, stiffness: 250 });
     });
-    soundRef.current?.replayAsync().catch(() => {});
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+    if (soundEnabled) {
+      soundRef.current?.replayAsync().catch(() => {});
+    }
     onPress?.();
   };
 

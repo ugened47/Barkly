@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   useSharedValue,
   useAnimatedStyle,
@@ -6,9 +7,21 @@ import {
 } from 'react-native-reanimated';
 import { Text, View, AnimatedView } from '@/components/tw';
 import { ClickerButton } from '@/components/ClickerButton';
+import { useAppStore } from '@/store/useAppStore';
 
 export default function ClickerScreen() {
   const flashOpacity = useSharedValue(0);
+  const sessionClicks = useAppStore((s) => s.sessionClicks);
+  const soundEnabled = useAppStore((s) => s.soundEnabled);
+  const recordClick = useAppStore((s) => s.recordClick);
+  const resetSessionClicks = useAppStore((s) => s.resetSessionClicks);
+
+  // Reset the session counter when the user leaves this screen
+  useEffect(() => {
+    return () => {
+      resetSessionClicks();
+    };
+  }, [resetSessionClicks]);
 
   const flashStyle = useAnimatedStyle(() => ({
     opacity: flashOpacity.value,
@@ -19,6 +32,7 @@ export default function ClickerScreen() {
       withTiming(0.4, { duration: 40 }),
       withTiming(0, { duration: 280 }),
     );
+    recordClick();
   };
 
   return (
@@ -29,7 +43,14 @@ export default function ClickerScreen() {
         style={flashStyle}
       />
       <Text className="text-3xl font-bold text-slate-900">Clicker</Text>
-      <ClickerButton onPress={handleClick} />
+
+      {/* Session counter */}
+      <View className="items-center gap-1">
+        <Text className="text-6xl font-bold text-cyan-500">{sessionClicks}</Text>
+        <Text className="text-sm text-slate-500">taps this session</Text>
+      </View>
+
+      <ClickerButton onPress={handleClick} soundEnabled={soundEnabled} />
       <Text className="text-sm text-slate-500">Tap to click</Text>
     </View>
   );

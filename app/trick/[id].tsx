@@ -14,6 +14,8 @@ export default function TrickDetailScreen() {
   const trick = TRICKS_DATA.find((t) => t.id === id);
   const masteredTricks = useAppStore((s) => s.masteredTricks);
   const toggleMastered = useAppStore((s) => s.toggleMastered);
+  const practicedToday = useAppStore((s) => s.practicedToday);
+  const recordPractice = useAppStore((s) => s.recordPractice);
 
   if (!trick) {
     return (
@@ -24,6 +26,7 @@ export default function TrickDetailScreen() {
   }
 
   const isMastered = masteredTricks.includes(trick.id);
+  const isPracticedToday = practicedToday.includes(trick.id);
 
   return (
     <ScrollView
@@ -68,6 +71,21 @@ export default function TrickDetailScreen() {
           ))}
         </View>
 
+        {/* Practiced Today */}
+        <Pressable
+          onPress={() => {
+            if (!isPracticedToday) recordPractice(trick.id);
+          }}
+          className={`rounded-2xl py-4 items-center ${isPracticedToday ? 'bg-emerald-100' : 'bg-slate-100'}`}
+        >
+          <Text
+            className={`text-base font-semibold ${isPracticedToday ? 'text-emerald-700' : 'text-slate-600'}`}
+          >
+            {isPracticedToday ? 'Practiced ✓' : 'Practiced Today'}
+          </Text>
+        </Pressable>
+
+        {/* Mark as Mastered */}
         <Pressable
           onPress={() => toggleMastered(trick.id)}
           className={`rounded-2xl py-4 items-center ${isMastered ? 'bg-slate-200' : 'bg-cyan-500'}`}

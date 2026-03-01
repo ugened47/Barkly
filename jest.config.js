@@ -14,6 +14,7 @@ module.exports = {
       '@react-native-async-storage/async-storage/jest/async-storage-mock',
     // Mock Expo modules
     '^expo-av$': '<rootDir>/__mocks__/expo-av.js',
+    '^expo-haptics$': '<rootDir>/__mocks__/expo-haptics.js',
     '^expo-router$': '<rootDir>/__mocks__/expo-router.js',
   },
   transformIgnorePatterns: [
