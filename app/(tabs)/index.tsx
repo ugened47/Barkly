@@ -9,11 +9,14 @@ import { useAppStore } from '@/store/useAppStore';
 export default function HomeScreen() {
   const streak = useAppStore((s) => s.streak);
   const masteredTricks = useAppStore((s) => s.masteredTricks);
+  const dogProfile = useAppStore((s) => s.dogProfile);
 
   const recommendedTricks = useMemo(
     () => TRICKS_DATA.filter((t) => !masteredTricks.includes(t.id)).slice(0, 3),
     [masteredTricks],
   );
+
+  const showOnboarding = dogProfile.name === '';
 
   return (
     <ScrollView
@@ -22,6 +25,18 @@ export default function HomeScreen() {
     >
       <View className="flex-1 gap-6 px-4 pt-16 pb-8">
         <Text className="text-3xl font-bold text-slate-900">Good morning!</Text>
+
+        {/* Onboarding nudge */}
+        {showOnboarding ? (
+          <View className="bg-cyan-50 border border-cyan-200 rounded-2xl p-4 gap-1">
+            <Text className="text-base font-semibold text-cyan-800">
+              Set up your dog&apos;s profile
+            </Text>
+            <Text className="text-sm text-cyan-700">
+              Visit the Profile tab to add your dog&apos;s name and breed.
+            </Text>
+          </View>
+        ) : null}
 
         {/* Streak Counter */}
         <View className="bg-white rounded-2xl p-5 gap-2">
