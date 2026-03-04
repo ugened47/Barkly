@@ -3,10 +3,10 @@ import { useLocalSearchParams } from 'expo-router';
 import { TRICKS_DATA } from '@/constants/TricksData';
 import { useAppStore } from '@/store/useAppStore';
 
-const difficultyColor: Record<string, string> = {
-  Easy: 'bg-emerald-100 text-emerald-700',
-  Medium: 'bg-amber-100 text-amber-700',
-  Hard: 'bg-red-100 text-red-700',
+const DIFFICULTY_STYLE: Record<string, { badge: string; text: string; emoji: string }> = {
+  Easy:   { badge: 'bg-emerald-100', text: 'text-emerald-700', emoji: '🟢' },
+  Medium: { badge: 'bg-amber-100',   text: 'text-amber-700',   emoji: '🟡' },
+  Hard:   { badge: 'bg-red-100',     text: 'text-red-700',     emoji: '🔴' },
 };
 
 export default function TrickDetailScreen() {
@@ -19,52 +19,53 @@ export default function TrickDetailScreen() {
 
   if (!trick) {
     return (
-      <View className="flex-1 items-center justify-center bg-slate-50">
-        <Text className="text-lg text-slate-500">Trick not found.</Text>
+      <View className="flex-1 items-center justify-center bg-orange-50">
+        <Text className="text-4xl mb-2">🐾</Text>
+        <Text className="text-lg text-stone-500">Trick not found.</Text>
       </View>
     );
   }
 
   const isMastered = masteredTricks.includes(trick.id);
   const isPracticedToday = practicedToday.includes(trick.id);
+  const style = DIFFICULTY_STYLE[trick.difficulty];
 
   return (
     <ScrollView
-      className="flex-1 bg-slate-50"
+      className="flex-1 bg-orange-50"
       contentInsetAdjustmentBehavior="automatic"
     >
       <View className="flex-1 gap-6 px-4 pt-8 pb-8">
-        <View className="gap-2">
-          <View className="flex-row items-center gap-3">
-            <Text className="text-3xl font-bold text-slate-900">
+
+        {/* Header */}
+        <View className="gap-3">
+          <View className="flex-row items-center gap-3 flex-wrap">
+            <Text className="text-3xl font-bold text-stone-900">
               {trick.name}
             </Text>
-            <View
-              className={`rounded-full px-3 py-1 ${difficultyColor[trick.difficulty]}`}
-            >
-              <Text
-                className={`text-xs font-medium ${difficultyColor[trick.difficulty]}`}
-              >
-                {trick.difficulty}
+            <View className={`rounded-full px-3 py-1 ${style.badge}`}>
+              <Text className={`text-xs font-semibold ${style.text}`}>
+                {style.emoji} {trick.difficulty}
               </Text>
             </View>
           </View>
-          <Text className="text-base text-slate-500">{trick.category}</Text>
+          <Text className="text-base text-stone-500">{trick.category}</Text>
         </View>
 
+        {/* Steps */}
         <View className="gap-3">
-          <Text className="text-lg font-semibold text-slate-700">Steps</Text>
+          <Text className="text-lg font-semibold text-stone-700">🐾 Steps</Text>
           {trick.steps.map((step, index) => (
             <View
               key={index}
-              className="flex-row gap-3 bg-white rounded-xl p-4"
+              className="flex-row gap-3 bg-white rounded-2xl p-4"
             >
-              <View className="h-7 w-7 items-center justify-center rounded-full bg-cyan-100">
-                <Text className="text-sm font-semibold text-cyan-700">
+              <View className="h-7 w-7 items-center justify-center rounded-full bg-orange-100">
+                <Text className="text-sm font-bold text-orange-600">
                   {index + 1}
                 </Text>
               </View>
-              <Text className="flex-1 text-base text-slate-700 leading-6">
+              <Text className="flex-1 text-base text-stone-700 leading-6">
                 {step}
               </Text>
             </View>
@@ -76,24 +77,24 @@ export default function TrickDetailScreen() {
           onPress={() => {
             if (!isPracticedToday) recordPractice(trick.id);
           }}
-          className={`rounded-2xl py-4 items-center ${isPracticedToday ? 'bg-emerald-100' : 'bg-slate-100'}`}
+          className={`rounded-2xl py-4 items-center ${isPracticedToday ? 'bg-emerald-100' : 'bg-orange-100'}`}
         >
           <Text
-            className={`text-base font-semibold ${isPracticedToday ? 'text-emerald-700' : 'text-slate-600'}`}
+            className={`text-base font-semibold ${isPracticedToday ? 'text-emerald-700' : 'text-orange-700'}`}
           >
-            {isPracticedToday ? 'Practiced ✓' : 'Practiced Today'}
+            {isPracticedToday ? '✅ Practiced today!' : '🎯 Practiced Today'}
           </Text>
         </Pressable>
 
         {/* Mark as Mastered */}
         <Pressable
           onPress={() => toggleMastered(trick.id)}
-          className={`rounded-2xl py-4 items-center ${isMastered ? 'bg-slate-200' : 'bg-cyan-500'}`}
+          className={`rounded-2xl py-4 items-center ${isMastered ? 'bg-stone-200' : 'bg-orange-500'}`}
         >
           <Text
-            className={`text-base font-semibold ${isMastered ? 'text-slate-600' : 'text-white'}`}
+            className={`text-base font-semibold ${isMastered ? 'text-stone-600' : 'text-white'}`}
           >
-            {isMastered ? 'Mastered ✓' : 'Mark as Mastered'}
+            {isMastered ? '⭐ Mastered!' : '🏆 Mark as Mastered'}
           </Text>
         </Pressable>
       </View>

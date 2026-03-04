@@ -21,7 +21,7 @@ beforeEach(() => {
 describe('ClickerScreen', () => {
   it('renders the Clicker heading', () => {
     const { getByText } = render(<ClickerScreen />);
-    expect(getByText('Clicker')).toBeTruthy();
+    expect(getByText(/Clicker/)).toBeTruthy();
   });
 
   it('shows the session click count starting at 0', () => {

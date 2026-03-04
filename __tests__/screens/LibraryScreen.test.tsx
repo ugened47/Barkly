@@ -15,18 +15,18 @@ beforeEach(() => {
 describe('LibraryScreen', () => {
   it('renders the screen title', () => {
     const { getByText } = render(<LibraryScreen />);
-    expect(getByText('Training Library')).toBeTruthy();
+    expect(getByText(/Training Library/)).toBeTruthy();
   });
 
   it('shows 0 of N tricks mastered by default', () => {
     const { getByText } = render(<LibraryScreen />);
-    expect(getByText(`0 of ${TRICKS_DATA.length} tricks mastered`)).toBeTruthy();
+    expect(getByText(new RegExp(`0 of ${TRICKS_DATA.length} tricks mastered`))).toBeTruthy();
   });
 
   it('updates the mastered count when tricks are mastered', () => {
     useAppStore.setState({ masteredTricks: ['sit', 'stay'] });
     const { getByText } = render(<LibraryScreen />);
-    expect(getByText(`2 of ${TRICKS_DATA.length} tricks mastered`)).toBeTruthy();
+    expect(getByText(new RegExp(`2 of ${TRICKS_DATA.length} tricks mastered`))).toBeTruthy();
   });
 
   it('renders all three category headings', () => {
@@ -46,12 +46,12 @@ describe('LibraryScreen', () => {
   it('shows mastered checkmark for a mastered trick', () => {
     useAppStore.setState({ masteredTricks: ['sit'] });
     const { getAllByText } = render(<LibraryScreen />);
-    expect(getAllByText('✓').length).toBeGreaterThan(0);
+    expect(getAllByText('⭐').length).toBeGreaterThan(0);
   });
 
   it('shows no checkmarks when no tricks are mastered', () => {
     const { queryByText } = render(<LibraryScreen />);
-    expect(queryByText('✓')).toBeNull();
+    expect(queryByText('⭐')).toBeNull();
   });
 });
 

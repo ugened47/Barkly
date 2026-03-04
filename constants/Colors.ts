@@ -1,15 +1,15 @@
 // Theme colors — defined as JS constants so they can be used outside of className contexts
 // (e.g., tab bar tint, animated style values). Mirror these values in your CSS theme tokens.
 export const Colors = {
-  primary: '#06b6d4',      // cyan-500
-  primaryLight: '#67e8f9', // cyan-300
-  primaryDark: '#0891b2',  // cyan-600
-  background: '#f8fafc',   // slate-50
+  primary: '#f97316',      // orange-500
+  primaryLight: '#fed7aa', // orange-200
+  primaryDark: '#ea580c',  // orange-600
+  background: '#fff7ed',   // orange-50
   card: '#ffffff',
-  text: '#0f172a',         // slate-900
-  textMuted: '#64748b',    // slate-500
-  border: '#e2e8f0',       // slate-200
+  text: '#1c1917',         // stone-900
+  textMuted: '#78716c',    // stone-500
+  border: '#e7e5e4',       // stone-200
   tabBar: '#ffffff',
-  tabBarActive: '#06b6d4',
-  tabBarInactive: '#94a3b8', // slate-400
+  tabBarActive: '#f97316', // orange-500
+  tabBarInactive: '#a8a29e', // stone-400
 };

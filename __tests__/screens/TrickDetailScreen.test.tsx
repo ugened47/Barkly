@@ -29,12 +29,12 @@ describe('TrickDetailScreen', () => {
 
   it('renders the difficulty badge', () => {
     const { getAllByText } = render(<TrickDetailScreen />);
-    expect(getAllByText('Easy').length).toBeGreaterThan(0);
+    expect(getAllByText(/Easy/).length).toBeGreaterThan(0);
   });
 
   it('renders the Steps heading', () => {
     const { getByText } = render(<TrickDetailScreen />);
-    expect(getByText('Steps')).toBeTruthy();
+    expect(getByText(/Steps/)).toBeTruthy();
   });
 
   it('renders step numbers', () => {
@@ -45,25 +45,25 @@ describe('TrickDetailScreen', () => {
 
   it('shows "Mark as Mastered" button when not mastered', () => {
     const { getByText } = render(<TrickDetailScreen />);
-    expect(getByText('Mark as Mastered')).toBeTruthy();
+    expect(getByText(/Mark as Mastered/)).toBeTruthy();
   });
 
   it('shows "Mastered ✓" when the trick is already mastered', () => {
     useAppStore.setState({ masteredTricks: ['sit'] });
     const { getByText } = render(<TrickDetailScreen />);
-    expect(getByText('Mastered ✓')).toBeTruthy();
+    expect(getByText('⭐ Mastered!')).toBeTruthy();
   });
 
   it('marks trick as mastered when button is pressed', () => {
     const { getByText } = render(<TrickDetailScreen />);
-    fireEvent.press(getByText('Mark as Mastered'));
+    fireEvent.press(getByText(/Mark as Mastered/));
     expect(useAppStore.getState().masteredTricks).toContain('sit');
   });
 
   it('unmarks trick when "Mastered ✓" is pressed', () => {
     useAppStore.setState({ masteredTricks: ['sit'] });
     const { getByText } = render(<TrickDetailScreen />);
-    fireEvent.press(getByText('Mastered ✓'));
+    fireEvent.press(getByText('⭐ Mastered!'));
     expect(useAppStore.getState().masteredTricks).not.toContain('sit');
   });
 
@@ -84,7 +84,7 @@ describe('TrickDetailScreen', () => {
     mockUseLocalSearchParams.mockReturnValue({ id: 'play-dead' });
     const { getByText, getAllByText } = render(<TrickDetailScreen />);
     expect(getByText('Play Dead')).toBeTruthy();
-    expect(getAllByText('Hard').length).toBeGreaterThan(0);
+    expect(getAllByText(/Hard/).length).toBeGreaterThan(0);
   });
 
   it('renders step text for the sit trick', () => {

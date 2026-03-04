@@ -30,22 +30,21 @@ describe('TrickCard', () => {
     const { getAllByText } = render(
       <TrickCard trick={baseTrick} mastered={false} onPress={() => {}} />,
     );
-    // Difficulty text appears in both badge text nodes
-    expect(getAllByText('Easy').length).toBeGreaterThan(0);
+    expect(getAllByText(/Easy/).length).toBeGreaterThan(0);
   });
 
   it('shows the mastered checkmark when mastered=true', () => {
     const { getByText } = render(
       <TrickCard trick={baseTrick} mastered={true} onPress={() => {}} />,
     );
-    expect(getByText('✓')).toBeTruthy();
+    expect(getByText('⭐')).toBeTruthy();
   });
 
   it('hides the checkmark when mastered=false', () => {
     const { queryByText } = render(
       <TrickCard trick={baseTrick} mastered={false} onPress={() => {}} />,
     );
-    expect(queryByText('✓')).toBeNull();
+    expect(queryByText('⭐')).toBeNull();
   });
 
   it('calls onPress when the card is pressed', () => {
@@ -62,7 +61,7 @@ describe('TrickCard', () => {
     const { getAllByText } = render(
       <TrickCard trick={trick} mastered={false} onPress={() => {}} />,
     );
-    expect(getAllByText('Medium').length).toBeGreaterThan(0);
+    expect(getAllByText(/Medium/).length).toBeGreaterThan(0);
   });
 
   it('renders a Hard difficulty trick', () => {
@@ -70,7 +69,7 @@ describe('TrickCard', () => {
     const { getAllByText } = render(
       <TrickCard trick={trick} mastered={false} onPress={() => {}} />,
     );
-    expect(getAllByText('Hard').length).toBeGreaterThan(0);
+    expect(getAllByText(/Hard/).length).toBeGreaterThan(0);
   });
 
   it('renders correct step count for a single-step trick', () => {

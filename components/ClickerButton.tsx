@@ -57,7 +57,7 @@ export function ClickerButton({ onPress, soundEnabled = true }: Props) {
     <AnimatedPressable
       style={animatedStyle}
       onPress={handlePress}
-      className="items-center justify-center w-56 h-56 rounded-full bg-cyan-500 shadow-lg"
+      className="items-center justify-center w-56 h-56 rounded-full bg-orange-500 shadow-lg"
     >
       <Text className="text-white text-3xl font-bold tracking-widest">CLICK</Text>
     </AnimatedPressable>

@@ -9,6 +9,12 @@ const CATEGORIES = ['Basic Obedience', 'Puppy Tricks', 'Advanced'] as const;
 const DIFFICULTIES: Array<Difficulty | 'All'> = ['All', 'Easy', 'Medium', 'Hard'];
 const DIFFICULTY_ORDER: Record<string, number> = { Easy: 0, Medium: 1, Hard: 2 };
 
+const CATEGORY_EMOJI: Record<string, string> = {
+  'Basic Obedience': '🎓',
+  'Puppy Tricks': '🐕',
+  'Advanced': '🏆',
+};
+
 function filterAndSort(
   tricks: Trick[],
   query: string,
@@ -43,24 +49,28 @@ export default function LibraryScreen() {
 
   const hasResults = CATEGORIES.some((cat) => filteredByCategory[cat].length > 0);
 
+  const progressPct = TRICKS_DATA.length > 0
+    ? Math.round((masteredTricks.length / TRICKS_DATA.length) * 100)
+    : 0;
+
   return (
     <ScrollView
-      className="flex-1 bg-slate-50"
+      className="flex-1 bg-orange-50"
       contentInsetAdjustmentBehavior="automatic"
     >
       <View className="flex-1 gap-6 px-4 pt-16 pb-8">
         <View className="gap-1">
-          <Text className="text-3xl font-bold text-slate-900">Training Library</Text>
-          <Text className="text-base text-slate-500">
-            {masteredTricks.length} of {TRICKS_DATA.length} tricks mastered
+          <Text className="text-3xl font-bold text-stone-900">📚 Training Library</Text>
+          <Text className="text-base text-stone-500">
+            {masteredTricks.length} of {TRICKS_DATA.length} tricks mastered · {progressPct}%
           </Text>
         </View>
 
         {/* Search */}
         <TextInput
-          className="bg-white rounded-xl px-4 py-3 text-base text-slate-900 border border-slate-200"
+          className="bg-white rounded-2xl px-4 py-3 text-base text-stone-900 border border-stone-200"
           placeholder="Search tricks…"
-          placeholderTextColor="#94a3b8"
+          placeholderTextColor="#a8a29e"
           value={searchQuery}
           onChangeText={setSearchQuery}
           returnKeyType="search"
@@ -76,13 +86,13 @@ export default function LibraryScreen() {
               onPress={() => setSelectedDifficulty(d)}
               className={`rounded-full px-4 py-2 ${
                 selectedDifficulty === d
-                  ? 'bg-cyan-500'
-                  : 'bg-white border border-slate-200'
+                  ? 'bg-orange-500'
+                  : 'bg-white border border-stone-200'
               }`}
             >
               <Text
                 className={`text-sm font-medium ${
-                  selectedDifficulty === d ? 'text-white' : 'text-slate-600'
+                  selectedDifficulty === d ? 'text-white' : 'text-stone-600'
                 }`}
               >
                 {d}
@@ -96,7 +106,10 @@ export default function LibraryScreen() {
           CATEGORIES.map((category) =>
             filteredByCategory[category].length > 0 ? (
               <View key={category} className="gap-3">
-                <Text className="text-lg font-semibold text-slate-700">{category}</Text>
+                <View className="flex-row items-center gap-2">
+                  <Text className="text-2xl">{CATEGORY_EMOJI[category]}</Text>
+                  <Text className="text-lg font-bold text-stone-800">{category}</Text>
+                </View>
                 <View className="gap-2">
                   {filteredByCategory[category].map((trick) => (
                     <TrickCard
@@ -112,8 +125,9 @@ export default function LibraryScreen() {
           )
         ) : (
           <View className="bg-white rounded-2xl p-6 items-center gap-2">
-            <Text className="text-base font-semibold text-slate-900">No tricks found</Text>
-            <Text className="text-sm text-slate-500 text-center">
+            <Text className="text-4xl">🔍</Text>
+            <Text className="text-base font-semibold text-stone-900">No tricks found</Text>
+            <Text className="text-sm text-stone-500 text-center">
               Try a different search or filter.
             </Text>
           </View>

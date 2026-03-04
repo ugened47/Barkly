@@ -39,7 +39,7 @@ describe('Trick mastery — HomeScreen', () => {
 
     // User opens TrickDetailScreen and marks Sit as mastered
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
 
     // HomeScreen must no longer recommend Sit
     expect(render(<HomeScreen />).queryByText('Sit')).toBeNull();
@@ -54,8 +54,8 @@ describe('Trick mastery — HomeScreen', () => {
   it('unmastering a trick brings it back into recommendations', () => {
     // Master then unmaster 'sit'
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mastered ✓'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
+    fireEvent.press(render(<TrickDetailScreen />).getByText('⭐ Mastered!'));
 
     // 'Sit' should reappear in HomeScreen recommendations
     expect(render(<HomeScreen />).getByText('Sit')).toBeTruthy();
@@ -65,33 +65,33 @@ describe('Trick mastery — HomeScreen', () => {
 describe('Trick mastery — LibraryScreen', () => {
   it('mastered trick shows a checkmark badge in the library', () => {
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
 
     const { getAllByText } = render(<LibraryScreen />);
-    expect(getAllByText('✓').length).toBeGreaterThan(0);
+    expect(getAllByText('⭐').length).toBeGreaterThan(0);
   });
 
   it('mastered count increments correctly in LibraryScreen', () => {
     expect(
-      render(<LibraryScreen />).getByText(`0 of ${TRICKS_DATA.length} tricks mastered`),
+      render(<LibraryScreen />).getByText(new RegExp(`0 of ${TRICKS_DATA.length} tricks mastered`)),
     ).toBeTruthy();
 
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
 
     expect(
-      render(<LibraryScreen />).getByText(`1 of ${TRICKS_DATA.length} tricks mastered`),
+      render(<LibraryScreen />).getByText(new RegExp(`1 of ${TRICKS_DATA.length} tricks mastered`)),
     ).toBeTruthy();
   });
 
   it('mastering multiple tricks updates the library count', () => {
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
     mockParams.mockReturnValue({ id: 'stay' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
 
     expect(
-      render(<LibraryScreen />).getByText(`2 of ${TRICKS_DATA.length} tricks mastered`),
+      render(<LibraryScreen />).getByText(new RegExp(`2 of ${TRICKS_DATA.length} tricks mastered`)),
     ).toBeTruthy();
   });
 });
@@ -99,16 +99,16 @@ describe('Trick mastery — LibraryScreen', () => {
 describe('Trick mastery — ProfileScreen', () => {
   it('mastered trick name appears in the ProfileScreen list', () => {
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
 
     expect(render(<ProfileScreen />).getByText('Sit')).toBeTruthy();
   });
 
   it('multiple mastered tricks all appear in ProfileScreen', () => {
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
     mockParams.mockReturnValue({ id: 'shake' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
 
     const { getByText } = render(<ProfileScreen />);
     expect(getByText('Sit')).toBeTruthy();
@@ -117,8 +117,8 @@ describe('Trick mastery — ProfileScreen', () => {
 
   it('unmastering a trick removes it from the ProfileScreen list', () => {
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mastered ✓'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
+    fireEvent.press(render(<TrickDetailScreen />).getByText('⭐ Mastered!'));
 
     expect(render(<ProfileScreen />).getByText('No tricks mastered yet')).toBeTruthy();
   });
@@ -129,7 +129,7 @@ describe('Trick mastery — ProfileScreen', () => {
     ).toBeTruthy();
 
     mockParams.mockReturnValue({ id: 'sit' });
-    fireEvent.press(render(<TrickDetailScreen />).getByText('Mark as Mastered'));
+    fireEvent.press(render(<TrickDetailScreen />).getByText(/Mark as Mastered/));
 
     expect(
       render(<ProfileScreen />).getByText(`1 / ${TRICKS_DATA.length}`),

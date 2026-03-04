@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { ScrollView, Text, View } from '@/components/tw';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import { TrickCard } from '@/components/TrickCard';
 import { TRICKS_DATA } from '@/constants/TricksData';
@@ -17,46 +19,59 @@ export default function HomeScreen() {
   );
 
   const showOnboarding = dogProfile.name === '';
+  const greeting = dogProfile.name ? `Hi, ${dogProfile.name}'s human! 👋` : 'Good morning! 👋';
 
   return (
     <ScrollView
-      className="flex-1 bg-slate-50"
+      className="flex-1 bg-orange-50"
       contentInsetAdjustmentBehavior="automatic"
     >
       <View className="flex-1 gap-6 px-4 pt-16 pb-8">
-        <Text className="text-3xl font-bold text-slate-900">Good morning!</Text>
+
+        {/* Hero */}
+        <View className="gap-1">
+          <Text className="text-4xl">🐶</Text>
+          <Text className="text-3xl font-bold text-stone-900">{greeting}</Text>
+          <Text className="text-base text-stone-500">Ready to train today?</Text>
+        </View>
 
         {/* Onboarding nudge */}
         {showOnboarding ? (
-          <View className="bg-cyan-50 border border-cyan-200 rounded-2xl p-4 gap-1">
-            <Text className="text-base font-semibold text-cyan-800">
-              Set up your dog&apos;s profile
+          <View className="bg-orange-100 border border-orange-200 rounded-2xl p-4 gap-1">
+            <Text className="text-base font-semibold text-orange-800">
+              🐾 Set up your dog&apos;s profile
             </Text>
-            <Text className="text-sm text-cyan-700">
+            <Text className="text-sm text-orange-700">
               Visit the Profile tab to add your dog&apos;s name and breed.
             </Text>
           </View>
         ) : null}
 
         {/* Streak Counter */}
-        <View className="bg-white rounded-2xl p-5 gap-2">
-          <Text className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
-            Training Streak
-          </Text>
+        <View className="bg-orange-500 rounded-3xl p-5 gap-2">
+          <View className="flex-row items-center gap-2">
+            <Ionicons name="flame" size={18} color="rgba(255,255,255,0.8)" />
+            <Text className="text-xs font-semibold text-orange-100 uppercase tracking-widest">
+              Training Streak
+            </Text>
+          </View>
           <View className="flex-row items-end gap-2">
-            <Text className="text-5xl font-bold text-cyan-500">{streak}</Text>
-            <Text className="text-lg text-slate-500 pb-1">
+            <Text className="text-6xl font-bold text-white">{streak}</Text>
+            <Text className="text-xl text-orange-200 pb-1">
               {streak === 1 ? 'day' : 'days'}
             </Text>
           </View>
-          <Text className="text-sm text-slate-500">
+          <Text className="text-sm text-orange-100">
             Keep training daily to build your streak!
           </Text>
         </View>
 
         {/* Practice Today */}
         <View className="gap-3">
-          <Text className="text-xl font-bold text-slate-900">Practice Today</Text>
+          <View className="flex-row items-center gap-2">
+            <MaterialCommunityIcons name="paw" size={20} color="#f97316" />
+            <Text className="text-xl font-bold text-stone-900">Practice Today</Text>
+          </View>
 
           {recommendedTricks.length > 0 ? (
             <View className="gap-2">
@@ -70,11 +85,12 @@ export default function HomeScreen() {
               ))}
             </View>
           ) : (
-            <View className="bg-white rounded-2xl p-6 items-center gap-2">
-              <Text className="text-lg font-semibold text-slate-900">
+            <View className="bg-white rounded-2xl p-6 items-center gap-3">
+              <Text className="text-4xl">🏆</Text>
+              <Text className="text-lg font-semibold text-stone-900">
                 All tricks mastered!
               </Text>
-              <Text className="text-sm text-slate-500 text-center">
+              <Text className="text-sm text-stone-500 text-center">
                 You&apos;ve mastered every trick in the library. Keep it up!
               </Text>
             </View>

@@ -17,7 +17,7 @@ beforeEach(() => {
 describe('HomeScreen', () => {
   it('renders the greeting', () => {
     const { getByText } = render(<HomeScreen />);
-    expect(getByText('Good morning!')).toBeTruthy();
+    expect(getByText(/Good morning/)).toBeTruthy();
   });
 
   it('renders the Training Streak section', () => {

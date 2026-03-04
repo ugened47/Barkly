@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from '@/components/tw';
+import { Ionicons } from '@expo/vector-icons';
 
 import { ProgressBar } from '@/components/ProgressBar';
 import { TRICKS_DATA } from '@/constants/TricksData';
@@ -21,22 +22,39 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView
-      className="flex-1 bg-slate-50"
+      className="flex-1 bg-orange-50"
       contentInsetAdjustmentBehavior="automatic"
     >
       <View className="flex-1 gap-6 px-4 pt-16 pb-8">
-        <Text className="text-3xl font-bold text-slate-900">Profile</Text>
+
+        {/* Dog Avatar + Header */}
+        <View className="items-center gap-3">
+          <View className="w-24 h-24 rounded-full bg-orange-100 items-center justify-center">
+            <Text className="text-5xl">🐶</Text>
+          </View>
+          <View className="items-center gap-0.5">
+            <Text className="text-2xl font-bold text-stone-900">
+              {dogProfile.name ? dogProfile.name : 'Your Dog'}
+            </Text>
+            {dogProfile.breed ? (
+              <Text className="text-base text-stone-500">{dogProfile.breed}</Text>
+            ) : null}
+          </View>
+        </View>
 
         {/* Dog Profile Form */}
         <View className="bg-white rounded-2xl p-5 gap-4">
-          <Text className="text-lg font-semibold text-slate-900">Your Dog</Text>
+          <View className="flex-row items-center gap-2">
+            <Text className="text-xl">🦴</Text>
+            <Text className="text-lg font-semibold text-stone-900">Your Dog</Text>
+          </View>
 
           <View className="gap-1">
-            <Text className="text-sm font-medium text-slate-500">Name</Text>
+            <Text className="text-sm font-medium text-stone-500">Name</Text>
             <TextInput
-              className="bg-slate-50 rounded-xl px-4 py-3 text-base text-slate-900 border border-slate-200"
+              className="bg-orange-50 rounded-xl px-4 py-3 text-base text-stone-900 border border-stone-200"
               placeholder="e.g. Buddy"
-              placeholderTextColor="#94a3b8"
+              placeholderTextColor="#a8a29e"
               value={dogProfile.name}
               onChangeText={(name) => setDogProfile({ name })}
               returnKeyType="next"
@@ -44,11 +62,11 @@ export default function ProfileScreen() {
           </View>
 
           <View className="gap-1">
-            <Text className="text-sm font-medium text-slate-500">Breed</Text>
+            <Text className="text-sm font-medium text-stone-500">Breed</Text>
             <TextInput
-              className="bg-slate-50 rounded-xl px-4 py-3 text-base text-slate-900 border border-slate-200"
+              className="bg-orange-50 rounded-xl px-4 py-3 text-base text-stone-900 border border-stone-200"
               placeholder="e.g. Golden Retriever"
-              placeholderTextColor="#94a3b8"
+              placeholderTextColor="#a8a29e"
               value={dogProfile.breed}
               onChangeText={(breed) => setDogProfile({ breed })}
               returnKeyType="done"
@@ -58,16 +76,22 @@ export default function ProfileScreen() {
 
         {/* Settings */}
         <View className="bg-white rounded-2xl p-5 gap-4">
-          <Text className="text-lg font-semibold text-slate-900">Settings</Text>
+          <View className="flex-row items-center gap-2">
+            <Text className="text-xl">⚙️</Text>
+            <Text className="text-lg font-semibold text-stone-900">Settings</Text>
+          </View>
           <View className="flex-row items-center justify-between">
-            <Text className="text-base text-slate-700">Click Sound</Text>
+            <View className="flex-row items-center gap-2">
+              <Ionicons name="volume-medium-outline" size={20} color="#78716c" />
+              <Text className="text-base text-stone-700">Click Sound</Text>
+            </View>
             <Pressable
               testID="sound-toggle"
               onPress={toggleSound}
-              className={`rounded-full px-4 py-2 ${soundEnabled ? 'bg-cyan-500' : 'bg-slate-200'}`}
+              className={`rounded-full px-4 py-2 ${soundEnabled ? 'bg-orange-500' : 'bg-stone-200'}`}
             >
               <Text
-                className={`text-sm font-semibold ${soundEnabled ? 'text-white' : 'text-slate-500'}`}
+                className={`text-sm font-semibold ${soundEnabled ? 'text-white' : 'text-stone-500'}`}
               >
                 {soundEnabled ? 'On' : 'Off'}
               </Text>
@@ -78,8 +102,11 @@ export default function ProfileScreen() {
         {/* Mastered Tricks */}
         <View className="gap-3">
           <View className="flex-row items-center justify-between">
-            <Text className="text-xl font-bold text-slate-900">Mastered Tricks</Text>
-            <Text className="text-sm text-slate-500">
+            <View className="flex-row items-center gap-2">
+              <Text className="text-xl">🏆</Text>
+              <Text className="text-xl font-bold text-stone-900">Mastered Tricks</Text>
+            </View>
+            <Text className="text-sm text-stone-500">
               {masteredTrickObjects.length} / {TRICKS_DATA.length}
             </Text>
           </View>
@@ -92,21 +119,25 @@ export default function ProfileScreen() {
               {masteredTrickObjects.map((trick, index) => (
                 <View
                   key={trick.id}
-                  className={`flex-row items-center justify-between px-4 py-3${index < masteredTrickObjects.length - 1 ? ' border-b border-slate-100' : ''}`}
+                  className={`flex-row items-center justify-between px-4 py-3${index < masteredTrickObjects.length - 1 ? ' border-b border-stone-100' : ''}`}
                 >
-                  <Text className="text-base font-medium text-slate-900">
-                    {trick.name}
-                  </Text>
-                  <Text className="text-sm text-slate-500">{trick.category}</Text>
+                  <View className="flex-row items-center gap-2">
+                    <Text className="text-base">⭐</Text>
+                    <Text className="text-base font-medium text-stone-900">
+                      {trick.name}
+                    </Text>
+                  </View>
+                  <Text className="text-sm text-stone-500">{trick.category}</Text>
                 </View>
               ))}
             </View>
           ) : (
             <View className="bg-white rounded-2xl p-6 items-center gap-2">
-              <Text className="text-base font-semibold text-slate-900">
+              <Text className="text-4xl">🐾</Text>
+              <Text className="text-base font-semibold text-stone-900">
                 No tricks mastered yet
               </Text>
-              <Text className="text-sm text-slate-500 text-center">
+              <Text className="text-sm text-stone-500 text-center">
                 Head to the Library tab to start training!
               </Text>
             </View>

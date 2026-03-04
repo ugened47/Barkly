@@ -34,12 +34,12 @@ afterEach(() => {
 describe('TrickDetailScreen — practiced today', () => {
   it('renders the "Practiced Today" button', () => {
     const { getByText } = render(<TrickDetailScreen />);
-    expect(getByText('Practiced Today')).toBeTruthy();
+    expect(getByText('🎯 Practiced Today')).toBeTruthy();
   });
 
   it('records the practice and starts the streak when pressed', () => {
     const { getByText } = render(<TrickDetailScreen />);
-    fireEvent.press(getByText('Practiced Today'));
+    fireEvent.press(getByText('🎯 Practiced Today'));
     expect(useAppStore.getState().practicedToday).toContain('sit');
     expect(useAppStore.getState().streak).toBe(1);
   });
@@ -47,25 +47,25 @@ describe('TrickDetailScreen — practiced today', () => {
   it('shows "Practiced ✓" when the trick is already in practicedToday', () => {
     useAppStore.setState({ practicedToday: ['sit'] });
     const { getByText } = render(<TrickDetailScreen />);
-    expect(getByText('Practiced ✓')).toBeTruthy();
+    expect(getByText('✅ Practiced today!')).toBeTruthy();
   });
 
   it('hides "Practiced Today" button when already practiced', () => {
     useAppStore.setState({ practicedToday: ['sit'] });
     const { queryByText } = render(<TrickDetailScreen />);
-    expect(queryByText('Practiced Today')).toBeNull();
+    expect(queryByText('🎯 Practiced Today')).toBeNull();
   });
 
   it('does not interfere with the "Mark as Mastered" button', () => {
     const { getByText } = render(<TrickDetailScreen />);
-    expect(getByText('Mark as Mastered')).toBeTruthy();
-    expect(getByText('Practiced Today')).toBeTruthy();
+    expect(getByText(/Mark as Mastered/)).toBeTruthy();
+    expect(getByText('🎯 Practiced Today')).toBeTruthy();
   });
 
   it('practiced today and mastered can coexist independently', () => {
     useAppStore.setState({ practicedToday: ['sit'], masteredTricks: [] });
     const { getByText } = render(<TrickDetailScreen />);
-    expect(getByText('Practiced ✓')).toBeTruthy();
-    expect(getByText('Mark as Mastered')).toBeTruthy();
+    expect(getByText('✅ Practiced today!')).toBeTruthy();
+    expect(getByText(/Mark as Mastered/)).toBeTruthy();
   });
 });

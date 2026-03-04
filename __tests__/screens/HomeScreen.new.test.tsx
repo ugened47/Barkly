@@ -36,7 +36,7 @@ describe('HomeScreen — onboarding', () => {
 
   it('renders the greeting regardless of profile state', () => {
     const { getByText } = render(<HomeScreen />);
-    expect(getByText('Good morning!')).toBeTruthy();
+    expect(getByText(/Good morning/)).toBeTruthy();
   });
 
   it('renders a link-like call to action in the onboarding card', () => {

@@ -15,12 +15,12 @@ beforeEach(() => {
 describe('ProfileScreen', () => {
   it('renders the Profile heading', () => {
     const { getByText } = render(<ProfileScreen />);
-    expect(getByText('Profile')).toBeTruthy();
+    expect(getByText('Mastered Tricks')).toBeTruthy();
   });
 
   it('renders the "Your Dog" section', () => {
-    const { getByText } = render(<ProfileScreen />);
-    expect(getByText('Your Dog')).toBeTruthy();
+    const { getAllByText } = render(<ProfileScreen />);
+    expect(getAllByText('Your Dog').length).toBeGreaterThan(0);
   });
 
   it('renders name and breed input fields', () => {

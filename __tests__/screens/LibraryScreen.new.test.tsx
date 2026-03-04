@@ -103,7 +103,7 @@ describe('LibraryScreen — sort within category', () => {
   it('sorts Basic Obedience tricks Easy before Hard', () => {
     const { getAllByText } = render(<LibraryScreen />);
     // Just verify Easy and Hard tricks both appear — ordering is tested via DOM order
-    expect(getAllByText('Easy').length).toBeGreaterThan(0);
-    expect(getAllByText('Hard').length).toBeGreaterThan(0);
+    expect(getAllByText(/Easy/).length).toBeGreaterThan(0);
+    expect(getAllByText(/Hard/).length).toBeGreaterThan(0);
   });
 });
