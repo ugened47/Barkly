@@ -1,12 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { Pressable, Text } from "@/components/tw";
+import { useAudioPlayer } from "expo-audio";
+import * as Haptics from "expo-haptics";
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
+  useSharedValue,
   withSpring,
-} from 'react-native-reanimated';
-import { Audio } from 'expo-av';
-import * as Haptics from 'expo-haptics';
-import { Pressable, Text } from '@/components/tw';
+} from "react-native-reanimated";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -16,27 +15,11 @@ type Props = {
   soundEnabled?: boolean;
 };
 
+const clickSound = require("@/assets/sounds/click.mp3");
+
 export function ClickerButton({ onPress, soundEnabled = true }: Props) {
   const scale = useSharedValue(1);
-  const soundRef = useRef<Audio.Sound | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    Audio.Sound.createAsync(require('@/assets/sounds/click.mp3'))
-      .then(({ sound }) => {
-        if (mounted) {
-          soundRef.current = sound;
-        } else {
-          sound.unloadAsync();
-        }
-      })
-      .catch(() => {});
-    return () => {
-      mounted = false;
-      soundRef.current?.unloadAsync();
-      soundRef.current = null;
-    };
-  }, []);
+  const player = useAudioPlayer(clickSound);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -48,7 +31,8 @@ export function ClickerButton({ onPress, soundEnabled = true }: Props) {
     });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
     if (soundEnabled) {
-      soundRef.current?.replayAsync().catch(() => {});
+      player.seekTo(0);
+      player.play();
     }
     onPress?.();
   };
@@ -59,7 +43,9 @@ export function ClickerButton({ onPress, soundEnabled = true }: Props) {
       onPress={handlePress}
       className="items-center justify-center w-56 h-56 rounded-full bg-orange-500 shadow-lg"
     >
-      <Text className="text-white text-3xl font-bold tracking-widest">CLICK</Text>
+      <Text className="text-white text-3xl font-bold tracking-widest">
+        CLICK
+      </Text>
     </AnimatedPressable>
   );
 }

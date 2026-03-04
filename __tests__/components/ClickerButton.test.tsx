@@ -1,62 +1,61 @@
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { ClickerButton } from '@/components/ClickerButton';
-import * as Haptics from 'expo-haptics';
+import { ClickerButton } from "@/components/ClickerButton";
+import { fireEvent, render } from "@testing-library/react-native";
+import { useAudioPlayer } from "expo-audio";
+import * as Haptics from "expo-haptics";
+import React from "react";
 
-describe('ClickerButton', () => {
-  it('renders the CLICK label', () => {
-    const { getByText } = render(<ClickerButton />);
-    expect(getByText('CLICK')).toBeTruthy();
+const mockPlayer = {
+  play: jest.fn(),
+  seekTo: jest.fn(),
+  pause: jest.fn(),
+  remove: jest.fn(),
+};
+(useAudioPlayer as jest.Mock).mockReturnValue(mockPlayer);
+
+describe("ClickerButton", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (useAudioPlayer as jest.Mock).mockReturnValue(mockPlayer);
   });
 
-  it('calls the onPress callback when tapped', () => {
+  it("renders the CLICK label", () => {
+    const { getByText } = render(<ClickerButton />);
+    expect(getByText("CLICK")).toBeTruthy();
+  });
+
+  it("calls the onPress callback when tapped", () => {
     const onPress = jest.fn();
     const { getByText } = render(<ClickerButton onPress={onPress} />);
-    fireEvent.press(getByText('CLICK'));
+    fireEvent.press(getByText("CLICK"));
     expect(onPress).toHaveBeenCalledTimes(1);
   });
 
-  it('fires haptic feedback on each press', () => {
+  it("fires haptic feedback on each press", () => {
     const { getByText } = render(<ClickerButton />);
-    fireEvent.press(getByText('CLICK'));
+    fireEvent.press(getByText("CLICK"));
     expect(Haptics.impactAsync).toHaveBeenCalled();
   });
 
-  it('fires haptic feedback on every press', () => {
+  it("fires haptic feedback on every press", () => {
     const { getByText } = render(<ClickerButton />);
-    fireEvent.press(getByText('CLICK'));
-    fireEvent.press(getByText('CLICK'));
+    fireEvent.press(getByText("CLICK"));
+    fireEvent.press(getByText("CLICK"));
     expect(Haptics.impactAsync).toHaveBeenCalledTimes(2);
   });
 
-  it('does not call replayAsync when soundEnabled is false', async () => {
-    const mockSound = {
-      replayAsync: jest.fn().mockResolvedValue(undefined),
-      unloadAsync: jest.fn().mockResolvedValue(undefined),
-    };
-    const { Audio } = require('expo-av');
-    Audio.Sound.createAsync.mockResolvedValueOnce({ sound: mockSound });
-
+  it("does not play sound when soundEnabled is false", () => {
     const { getByText } = render(<ClickerButton soundEnabled={false} />);
-    // Wait for the async sound load
-    await new Promise((r) => setTimeout(r, 0));
-    fireEvent.press(getByText('CLICK'));
+    fireEvent.press(getByText("CLICK"));
 
-    expect(mockSound.replayAsync).not.toHaveBeenCalled();
+    expect(mockPlayer.seekTo).not.toHaveBeenCalled();
+    expect(mockPlayer.play).not.toHaveBeenCalled();
   });
 
-  it('calls replayAsync when soundEnabled is true (default)', async () => {
-    const mockSound = {
-      replayAsync: jest.fn().mockResolvedValue(undefined),
-      unloadAsync: jest.fn().mockResolvedValue(undefined),
-    };
-    const { Audio } = require('expo-av');
-    Audio.Sound.createAsync.mockResolvedValueOnce({ sound: mockSound });
-
+  it("plays sound when soundEnabled is true (default)", () => {
     const { getByText } = render(<ClickerButton soundEnabled />);
-    await new Promise((r) => setTimeout(r, 0));
-    fireEvent.press(getByText('CLICK'));
+    fireEvent.press(getByText("CLICK"));
 
-    expect(mockSound.replayAsync).toHaveBeenCalledTimes(1);
+    expect(mockPlayer.seekTo).toHaveBeenCalledWith(0);
+    expect(mockPlayer.play).toHaveBeenCalledTimes(1);
   });
 });
