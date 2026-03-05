@@ -20,8 +20,10 @@ module.exports = {
     // Mock @expo/vector-icons to prevent async font-loading act() warnings
     "^@expo/vector-icons$": "<rootDir>/__mocks__/@expo/vector-icons.js",
     "^@expo/vector-icons/(.*)$": "<rootDir>/__mocks__/@expo/vector-icons.js",
+    // Mock expo-iap (native IAP — not available in Jest)
+    "^expo-iap$": "<rootDir>/__mocks__/expo-iap.js",
   },
   transformIgnorePatterns: [
-    "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|nativewind|react-native-css|react-native-worklets|zustand|tailwind-merge|clsx)",
+    "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|nativewind|react-native-css|react-native-worklets|zustand|tailwind-merge|clsx|expo-iap)",
   ],
 };

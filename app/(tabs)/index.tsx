@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { ScrollView, Text, View } from '@/components/tw';
+import { Pressable, ScrollView, Text, View } from '@/components/tw';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -7,15 +7,20 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { TrickCard } from '@/components/TrickCard';
 import { TRICKS_DATA } from '@/constants/TricksData';
 import { useAppStore } from '@/store/useAppStore';
+import { isTrickLocked } from '@/utils/premium';
 
 export default function HomeScreen() {
   const streak = useAppStore((s) => s.streak);
   const masteredTricks = useAppStore((s) => s.masteredTricks);
   const dogProfile = useAppStore((s) => s.dogProfile);
+  const isPremium = useAppStore((s) => s.isPremium);
 
   const recommendedTricks = useMemo(
-    () => TRICKS_DATA.filter((t) => !masteredTricks.includes(t.id)).slice(0, 3),
-    [masteredTricks],
+    () =>
+      TRICKS_DATA
+        .filter((t) => !masteredTricks.includes(t.id) && !isTrickLocked(t, isPremium))
+        .slice(0, 3),
+    [masteredTricks, isPremium],
   );
 
   const showOnboarding = dogProfile.name === '';
@@ -95,6 +100,24 @@ export default function HomeScreen() {
               </Text>
             </View>
           )}
+
+          {/* Soft upsell nudge for free users */}
+          {!isPremium ? (
+            <Pressable
+              testID="home-upsell"
+              onPress={() => router.push('/paywall')}
+              className="bg-white border border-stone-200 rounded-2xl p-4 flex-row items-center gap-3"
+            >
+              <Text className="text-2xl">🔒</Text>
+              <View className="flex-1">
+                <Text className="text-sm font-semibold text-stone-800">
+                  More tricks available with Premium
+                </Text>
+                <Text className="text-xs text-stone-500">Tap to unlock all tricks</Text>
+              </View>
+              <Text className="text-stone-400">›</Text>
+            </Pressable>
+          ) : null}
         </View>
       </View>
     </ScrollView>

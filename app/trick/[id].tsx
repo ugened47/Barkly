@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { Pressable, ScrollView, Text, View } from '@/components/tw';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { TRICKS_DATA } from '@/constants/TricksData';
 import { useAppStore } from '@/store/useAppStore';
+import { isTrickLocked } from '@/utils/premium';
 
 const DIFFICULTY_STYLE: Record<string, { badge: string; text: string; emoji: string }> = {
   Easy:   { badge: 'bg-emerald-100', text: 'text-emerald-700', emoji: '🟢' },
@@ -16,6 +18,14 @@ export default function TrickDetailScreen() {
   const toggleMastered = useAppStore((s) => s.toggleMastered);
   const practicedToday = useAppStore((s) => s.practicedToday);
   const recordPractice = useAppStore((s) => s.recordPractice);
+  const isPremium = useAppStore((s) => s.isPremium);
+
+  // Guard: redirect to paywall if trick is locked
+  useEffect(() => {
+    if (trick && isTrickLocked(trick, isPremium)) {
+      router.replace('/paywall');
+    }
+  }, [trick, isPremium]);
 
   if (!trick) {
     return (
