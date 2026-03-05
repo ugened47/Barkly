@@ -19,6 +19,7 @@ beforeEach(() => {
     streak: 0,
     masteredTricks: [],
     dogProfile: { name: '', breed: '' },
+    isPremium: false,
   });
 });
 
@@ -50,7 +51,44 @@ describe('HomeScreen — navigation', () => {
   });
 });
 
-describe('LibraryScreen — navigation', () => {
+describe('LibraryScreen — navigation (free user)', () => {
+  it('pressing a free Basic Obedience trick navigates to it', () => {
+    const { getByText } = render(<LibraryScreen />);
+    fireEvent.press(getByText('Sit'));
+    expect(mockPush).toHaveBeenCalledWith('/trick/sit');
+  });
+
+  it('pressing a locked trick navigates to /paywall', () => {
+    const { getByText } = render(<LibraryScreen />);
+    fireEvent.press(getByText('Leave It'));
+    expect(mockPush).toHaveBeenCalledWith('/paywall');
+  });
+
+  it('pressing a locked Puppy Trick navigates to /paywall', () => {
+    const { getByText } = render(<LibraryScreen />);
+    fireEvent.press(getByText('Shake Paws'));
+    expect(mockPush).toHaveBeenCalledWith('/paywall');
+  });
+
+  it('pressing a locked Advanced trick navigates to /paywall', () => {
+    const { getByText } = render(<LibraryScreen />);
+    fireEvent.press(getByText('Play Dead'));
+    expect(mockPush).toHaveBeenCalledWith('/paywall');
+  });
+
+  it('mastered free tricks are still pressable and navigate correctly', () => {
+    useAppStore.setState({ masteredTricks: ['sit'] });
+    const { getByText } = render(<LibraryScreen />);
+    fireEvent.press(getByText('Sit'));
+    expect(mockPush).toHaveBeenCalledWith('/trick/sit');
+  });
+});
+
+describe('LibraryScreen — navigation (premium user)', () => {
+  beforeEach(() => {
+    useAppStore.setState({ isPremium: true });
+  });
+
   it('pressing a Basic Obedience trick navigates to it', () => {
     const { getByText } = render(<LibraryScreen />);
     fireEvent.press(getByText('Sit'));
@@ -79,12 +117,5 @@ describe('LibraryScreen — navigation', () => {
     const { getByText } = render(<LibraryScreen />);
     fireEvent.press(getByText('Weave Through Legs'));
     expect(mockPush).toHaveBeenCalledTimes(1);
-  });
-
-  it('mastered tricks are still pressable and navigate correctly', () => {
-    useAppStore.setState({ masteredTricks: ['sit'] });
-    const { getByText } = render(<LibraryScreen />);
-    fireEvent.press(getByText('Sit'));
-    expect(mockPush).toHaveBeenCalledWith('/trick/sit');
   });
 });

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from '@/components/tw';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 import { ProgressBar } from '@/components/ProgressBar';
 import { TRICKS_DATA } from '@/constants/TricksData';
@@ -12,6 +13,10 @@ export default function ProfileScreen() {
   const masteredTricks = useAppStore((s) => s.masteredTricks);
   const soundEnabled = useAppStore((s) => s.soundEnabled);
   const toggleSound = useAppStore((s) => s.toggleSound);
+  const isPremium = useAppStore((s) => s.isPremium);
+  const streak = useAppStore((s) => s.streak);
+  const totalClicks = useAppStore((s) => s.totalClicks);
+  const practicedToday = useAppStore((s) => s.practicedToday);
 
   const masteredTrickObjects = useMemo(
     () => TRICKS_DATA.filter((t) => masteredTricks.includes(t.id)),
@@ -41,6 +46,43 @@ export default function ProfileScreen() {
             ) : null}
           </View>
         </View>
+
+        {/* Premium stats card (premium users only) */}
+        {isPremium ? (
+          <View className="bg-orange-500 rounded-2xl p-5 gap-4">
+            <View className="flex-row items-center gap-2">
+              <Text className="text-xl">⭐</Text>
+              <Text className="text-lg font-semibold text-white">Premium Stats</Text>
+            </View>
+            <View className="flex-row gap-4">
+              <View className="flex-1 items-center gap-1">
+                <Text className="text-3xl font-bold text-white">{streak}</Text>
+                <Text className="text-xs text-orange-100">Day streak</Text>
+              </View>
+              <View className="flex-1 items-center gap-1">
+                <Text className="text-3xl font-bold text-white">{totalClicks}</Text>
+                <Text className="text-xs text-orange-100">Total clicks</Text>
+              </View>
+              <View className="flex-1 items-center gap-1">
+                <Text className="text-3xl font-bold text-white">{practicedToday.length}</Text>
+                <Text className="text-xs text-orange-100">Today's tricks</Text>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <Pressable
+            testID="upgrade-banner"
+            onPress={() => router.push('/paywall')}
+            className="bg-amber-50 border border-amber-200 rounded-2xl p-4 gap-1"
+          >
+            <Text className="text-base font-semibold text-amber-800">
+              ⭐ Upgrade to Premium
+            </Text>
+            <Text className="text-sm text-amber-700">
+              Unlock detailed stats and all tricks. Tap to learn more.
+            </Text>
+          </Pressable>
+        )}
 
         {/* Dog Profile Form */}
         <View className="bg-white rounded-2xl p-5 gap-4">

@@ -22,6 +22,10 @@ export default function RootLayout() {
           name="trick/[id]"
           options={{ title: "Trick Detail", headerBackTitle: "Back" }}
         />
+        <Stack.Screen
+          name="paywall"
+          options={{ presentation: "modal", title: "Go Premium" }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </>

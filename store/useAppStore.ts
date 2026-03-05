@@ -26,6 +26,14 @@ type AppState = {
   /** Trick IDs practiced today (resets each calendar day). */
   practicedToday: string[];
 
+  // ── Premium ───────────────────────────────────────────────────────────────
+  /** Whether the user currently has an active premium subscription. */
+  isPremium: boolean;
+  /** Whether the user purchased a lifetime plan (never revoked). */
+  hasLifetimePurchase: boolean;
+  /** ISO timestamp of the last premium validation. */
+  premiumValidatedAt: string | null;
+
   // ── Actions ───────────────────────────────────────────────────────────────
   incrementStreak: () => void;
   resetStreak: () => void;
@@ -35,6 +43,10 @@ type AppState = {
   resetSessionClicks: () => void;
   recordPractice: (trickId: string) => void;
   toggleSound: () => void;
+  grantPremium: () => void;
+  revokePremium: () => void;
+  grantLifetime: () => void;
+  setPremiumValidatedAt: (date: string) => void;
 };
 
 export const useAppStore = create<AppState>()(
@@ -49,6 +61,9 @@ export const useAppStore = create<AppState>()(
       totalClicks: 0,
       soundEnabled: true,
       practicedToday: [],
+      isPremium: false,
+      hasLifetimePurchase: false,
+      premiumValidatedAt: null,
 
       // ── Existing actions ───────────────────────────────────────────────────
       incrementStreak: () => set({ streak: get().streak + 1 }),
@@ -96,6 +111,24 @@ export const useAppStore = create<AppState>()(
       },
 
       toggleSound: () => set({ soundEnabled: !get().soundEnabled }),
+
+      // ── Premium actions ────────────────────────────────────────────────────
+      grantPremium: () =>
+        set({ isPremium: true, premiumValidatedAt: new Date().toISOString() }),
+
+      revokePremium: () => {
+        if (get().hasLifetimePurchase) return;
+        set({ isPremium: false });
+      },
+
+      grantLifetime: () =>
+        set({
+          isPremium: true,
+          hasLifetimePurchase: true,
+          premiumValidatedAt: new Date().toISOString(),
+        }),
+
+      setPremiumValidatedAt: (date: string) => set({ premiumValidatedAt: date }),
     }),
     {
       name: 'barkly-store',

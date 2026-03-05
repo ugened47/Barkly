@@ -6,6 +6,7 @@ import {
   type Trick,
 } from "@/constants/TricksData";
 import { useAppStore } from "@/store/useAppStore";
+import { isTrickLocked } from "@/utils/premium";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 
@@ -42,6 +43,7 @@ function filterAndSort(
 
 export default function LibraryScreen() {
   const masteredTricks = useAppStore((s) => s.masteredTricks);
+  const isPremium = useAppStore((s) => s.isPremium);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState<
@@ -69,6 +71,14 @@ export default function LibraryScreen() {
       ? Math.round((masteredTricks.length / TRICKS_DATA.length) * 100)
       : 0;
 
+  function handleTrickPress(trick: Trick) {
+    if (isTrickLocked(trick, isPremium)) {
+      router.push("/paywall");
+    } else {
+      router.push(`/trick/${trick.id}`);
+    }
+  }
+
   return (
     <ScrollView
       className="flex-1 bg-orange-50"
@@ -84,6 +94,22 @@ export default function LibraryScreen() {
             {progressPct}%
           </Text>
         </View>
+
+        {/* Free-user upsell banner */}
+        {!isPremium ? (
+          <Pressable
+            testID="upsell-banner"
+            onPress={() => router.push("/paywall")}
+            className="bg-amber-50 border border-amber-200 rounded-2xl p-4 gap-1"
+          >
+            <Text className="text-base font-semibold text-amber-800">
+              🔒 Unlock all tricks with Premium
+            </Text>
+            <Text className="text-sm text-amber-700">
+              Only the first 3 Basic Obedience tricks are free. Tap to upgrade.
+            </Text>
+          </Pressable>
+        ) : null}
 
         {/* Search */}
         <TextInput
@@ -137,7 +163,8 @@ export default function LibraryScreen() {
                       key={trick.id}
                       trick={trick}
                       mastered={masteredTricks.includes(trick.id)}
-                      onPress={() => router.push(`/trick/${trick.id}`)}
+                      locked={isTrickLocked(trick, isPremium)}
+                      onPress={() => handleTrickPress(trick)}
                     />
                   ))}
                 </View>
